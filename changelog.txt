@@ -1,0 +1,5 @@
+[B]Version 1.0.0[/B] - 15 Dec 2014
+Initial release
+
+[B]Version 1.0.1[/B] - 15 Dec 2014
+Fixed matching books by authors
