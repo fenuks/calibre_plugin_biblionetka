@@ -7,7 +7,7 @@ __license__   = 'GPL v3'
 __copyright__ = '2014, fenuks'
 __docformat__ = 'restructuredtext en'
 
-from PyQt5.Qt import QWidget, QFormLayout, QVBoxLayout, QHBoxLayout, QGroupBox, \
+from PyQt5.Qt import Qt, QWidget, QFormLayout, QVBoxLayout, QHBoxLayout, QGroupBox, \
     QLabel, QLineEdit, QIntValidator, QDoubleValidator, QCheckBox
 from calibre.utils.config import JSONConfig
 
@@ -28,13 +28,18 @@ prefs.defaults['title'] = True
 prefs.defaults['authors'] = True
 prefs.defaults['pubdate'] = True
 # prefs.defaults['publisher'] = True
-# prefs.defaults['series'] = True
+#prefs.defaults['series'] = True
 # prefs.defaults['isbn'] = True
 prefs.defaults['comments'] = True
 prefs.defaults['languages'] = True
 prefs.defaults['rating'] = True
 prefs.defaults['tags'] = True
 prefs.defaults['identifier'] = True
+prefs.defaults['get_translators'] = True
+prefs.defaults['get_original_title'] = True
+prefs.defaults['get_kategorie'] = True
+prefs.defaults['get_gatunki'] = True
+prefs.defaults['get_cykle'] = True
 
 
 class ConfigWidget(QWidget):
@@ -44,8 +49,10 @@ class ConfigWidget(QWidget):
         self.main_layout = QVBoxLayout()
         self.group_box = QGroupBox('Ustawienia ogólne')
         self.group_box2 = QGroupBox('Pobieraj metadane')
+        self.group_box3 = QGroupBox('Pobieraj dodatkowe metadane i dołącz je do komentarza')
         self.l = QFormLayout()
         self.l2 = QHBoxLayout()
+        self.l3 = QHBoxLayout()
 
         # general settings
         self.max_results_label = QLabel('Maksymalna liczba wyników')
@@ -124,11 +131,11 @@ pierwszy wynik może być niepoprawny')
         self.publisher.setChecked(prefs['publisher'])
         self.l2.addWidget(self.publisher)
         '''
-        '''
-        self.series = QCheckBox('Series')
-        self.series.setChecked(prefs['series'])
-        self.l2.addWidget(self.series)
-        '''
+
+        #self.series = QCheckBox('Series')
+        #self.series.setChecked(prefs['series'])
+        #self.l2.addWidget(self.series)
+
         '''
         self.isbn = QCheckBox('ISBN')
         self.isbn.setChecked(prefs['isbn'])
@@ -154,10 +161,33 @@ pierwszy wynik może być niepoprawny')
         self.identifier.setChecked(prefs['identifier'])
         self.l2.addWidget(self.identifier)
 
+        self.get_translators = QCheckBox('Tłumaczenie')
+        self.get_translators.setChecked(prefs['get_translators'])
+        self.l3.addWidget(self.get_translators)
+
+        self.get_original_title = QCheckBox('Tytuł oryginału')
+        self.get_original_title.setChecked(prefs['get_original_title'])
+        self.l3.addWidget(self.get_original_title)
+
+        self.get_kategorie = QCheckBox('Kategorie')
+        self.get_kategorie.setChecked(prefs['get_kategorie'])
+        self.l3.addWidget(self.get_kategorie)
+
+        self.get_gatunki = QCheckBox('Gatunki')
+        self.get_gatunki.setChecked(prefs['get_gatunki'])
+        self.l3.addWidget(self.get_gatunki)
+
+        self.get_cykle = QCheckBox('Cykle')
+        self.get_cykle.setChecked(prefs['get_cykle'])
+        self.l3.addWidget(self.get_cykle)
+
         self.group_box.setLayout(self.l)
         self.group_box2.setLayout(self.l2)
+        self.group_box3.setLayout(self.l3)
         self.main_layout.addWidget(self.group_box)
         self.main_layout.addWidget(self.group_box2)
+        self.main_layout.addWidget(self.group_box3)
+        #self.main_layout.setAlignment(Qt.AlignTop)
         self.setLayout(self.main_layout)
 
     def save_settings(self):
@@ -175,12 +205,17 @@ pierwszy wynik może być niepoprawny')
         prefs['authors'] = self.authors.isChecked()
         prefs['pubdate'] = self.pubdate.isChecked()
         # prefs['publisher'] = self.publisher.isChecked()
-        # prefs['series'] = self.series.isChecked()
+        #prefs['series'] = self.series.isChecked()
         # prefs['isbn'] = self.isbn.isChecked()
         prefs['comments'] = self.comments.isChecked()
         prefs['languages'] = self.languages.isChecked()
         prefs['rating'] = self.rating.isChecked()
         prefs['tags'] = self.tags.isChecked()
         prefs['identifier'] = self.identifier.isChecked()
+        prefs['get_translators'] = self.get_translators.isChecked()
+        prefs['get_original_title'] = self.get_original_title.isChecked()
+        prefs['get_kategorie'] = self.get_kategorie.isChecked()
+        prefs['get_gatunki'] = self.get_gatunki.isChecked()
+        prefs['get_cykle'] = self.get_cykle.isChecked()
 
         return prefs

@@ -24,13 +24,13 @@ class Biblionetka(Source):
     name                    = 'biblioNETka.pl'
     description             = 'Pobiera metadane z serwisu biblioNETka.pl'
     author                  = 'fenuks'
-    version                 = (1, 0, 1)
+    version                 = (1, 0, 4)
     minimum_calibre_version = (2, 0, 0)
     supported_platforms = ['linux', 'osx', 'windows']
 
     # source plugin options
     capabilities = frozenset(['identify', 'cover'])
-    touched_fields = frozenset(['title', 'authors', 'pubdate', 'comments', 'languages', 'rating', 'tags', 'identifier:'+IDENTIFIER])
+    touched_fields = frozenset(['title', 'authors', 'pubdate', 'comments', 'languages', 'rating', 'tags', 'series', 'identifier:'+IDENTIFIER])
     has_html_comments = True
     supports_gzip_transfer_encoding = True
     can_get_multiple_covers = True

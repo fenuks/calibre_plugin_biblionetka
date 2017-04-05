@@ -1,5 +1,17 @@
-[B]Version 1.0.0[/B] - 15 Dec 2014
-Initial release
+[B]Version 1.0.4[/B] - 29 Mar 2017
+(Submitted by Becky)
+Added: Download "Cykle" and ratings
+
+[B]Version 1.0.3[/B] - 29 Mar 2017
+(Submitted by Becky)
+Added: Configuration for additional informations
+
+[B]Version 1.0.2[/B] - 28 Mar 2017
+(Submitted by Becky)
+Added: Download additional informations
 
 [B]Version 1.0.1[/B] - 15 Dec 2014
 Fixed matching books by authors
+
+[B]Version 1.0.0[/B] - 15 Dec 2014
+Initial release
