@@ -3,17 +3,16 @@
 from __future__ import (unicode_literals, division, absolute_import,
                         print_function)
 
-__license__   = 'GPL v3'
+__license__ = 'GPL v3'
 __copyright__ = '2014, fenuks'
 __docformat__ = 'restructuredtext en'
 
 from PyQt5.Qt import Qt, QWidget, QFormLayout, QVBoxLayout, QHBoxLayout, QGroupBox, \
     QLabel, QLineEdit, QIntValidator, QDoubleValidator, QCheckBox
-from calibre.utils.config import JSONConfig
 
-IDENTIFIER = 'biblionetka'
+from .utils import IDENTIFIER, get_prefs
 
-prefs = JSONConfig('plugins/{}'.format(IDENTIFIER))
+prefs = get_prefs()
 prefs.defaults['max_results'] = 2
 prefs.defaults['authors_search'] = True
 prefs.defaults['only_first_author'] = False
@@ -28,18 +27,17 @@ prefs.defaults['title'] = True
 prefs.defaults['authors'] = True
 prefs.defaults['pubdate'] = True
 # prefs.defaults['publisher'] = True
-#prefs.defaults['series'] = True
 # prefs.defaults['isbn'] = True
 prefs.defaults['comments'] = True
 prefs.defaults['languages'] = True
 prefs.defaults['rating'] = True
 prefs.defaults['tags'] = True
 prefs.defaults['identifier'] = True
-prefs.defaults['get_translators'] = True
-prefs.defaults['get_original_title'] = True
-prefs.defaults['get_kategorie'] = True
-prefs.defaults['get_gatunki'] = True
-prefs.defaults['get_cykle'] = True
+prefs.defaults['translators'] = True
+prefs.defaults['original_title'] = True
+prefs.defaults['categories'] = True
+prefs.defaults['genres'] = True
+prefs.defaults['series'] = True
 
 
 class ConfigWidget(QWidget):
@@ -130,13 +128,7 @@ pierwszy wynik może być niepoprawny')
         self.publisher = QCheckBox('Wydawca')
         self.publisher.setChecked(prefs['publisher'])
         self.l2.addWidget(self.publisher)
-        '''
-
-        #self.series = QCheckBox('Series')
-        #self.series.setChecked(prefs['series'])
-        #self.l2.addWidget(self.series)
-
-        '''
+        
         self.isbn = QCheckBox('ISBN')
         self.isbn.setChecked(prefs['isbn'])
         self.l2.addWidget(self.isbn)
@@ -161,25 +153,25 @@ pierwszy wynik może być niepoprawny')
         self.identifier.setChecked(prefs['identifier'])
         self.l2.addWidget(self.identifier)
 
-        self.get_translators = QCheckBox('Tłumaczenie')
-        self.get_translators.setChecked(prefs['get_translators'])
-        self.l3.addWidget(self.get_translators)
+        self.translators = QCheckBox('Tłumaczenie')
+        self.translators.setChecked(prefs['translators'])
+        self.l3.addWidget(self.translators)
 
-        self.get_original_title = QCheckBox('Tytuł oryginału')
-        self.get_original_title.setChecked(prefs['get_original_title'])
-        self.l3.addWidget(self.get_original_title)
+        self.original_title = QCheckBox('Tytuł oryginału')
+        self.original_title.setChecked(prefs['original_title'])
+        self.l3.addWidget(self.original_title)
 
-        self.get_kategorie = QCheckBox('Kategorie')
-        self.get_kategorie.setChecked(prefs['get_kategorie'])
-        self.l3.addWidget(self.get_kategorie)
+        self.categories = QCheckBox('Kategorie')
+        self.categories.setChecked(prefs['categories'])
+        self.l3.addWidget(self.categories)
 
-        self.get_gatunki = QCheckBox('Gatunki')
-        self.get_gatunki.setChecked(prefs['get_gatunki'])
-        self.l3.addWidget(self.get_gatunki)
+        self.genres = QCheckBox('Gatunki')
+        self.genres.setChecked(prefs['genres'])
+        self.l3.addWidget(self.genres)
 
-        self.get_cykle = QCheckBox('Cykle')
-        self.get_cykle.setChecked(prefs['get_cykle'])
-        self.l3.addWidget(self.get_cykle)
+        self.series = QCheckBox('Cykle')
+        self.series.setChecked(prefs['series'])
+        self.l3.addWidget(self.series)
 
         self.group_box.setLayout(self.l)
         self.group_box2.setLayout(self.l2)
@@ -205,17 +197,16 @@ pierwszy wynik może być niepoprawny')
         prefs['authors'] = self.authors.isChecked()
         prefs['pubdate'] = self.pubdate.isChecked()
         # prefs['publisher'] = self.publisher.isChecked()
-        #prefs['series'] = self.series.isChecked()
         # prefs['isbn'] = self.isbn.isChecked()
         prefs['comments'] = self.comments.isChecked()
         prefs['languages'] = self.languages.isChecked()
         prefs['rating'] = self.rating.isChecked()
         prefs['tags'] = self.tags.isChecked()
         prefs['identifier'] = self.identifier.isChecked()
-        prefs['get_translators'] = self.get_translators.isChecked()
-        prefs['get_original_title'] = self.get_original_title.isChecked()
-        prefs['get_kategorie'] = self.get_kategorie.isChecked()
-        prefs['get_gatunki'] = self.get_gatunki.isChecked()
-        prefs['get_cykle'] = self.get_cykle.isChecked()
+        prefs['translators'] = self.translators.isChecked()
+        prefs['original_title'] = self.original_title.isChecked()
+        prefs['categories'] = self.categories.isChecked()
+        prefs['genres'] = self.genres.isChecked()
+        prefs['series'] = self.series.isChecked()
 
         return prefs
