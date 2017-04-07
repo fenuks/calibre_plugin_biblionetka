@@ -1,8 +1,9 @@
 from calibre.utils.config import JSONConfig
 
-IDENTIFIER = 'biblionetka'
-BOOK_PAGE_URL_SCHEME = 'http://www.biblionetka.pl/book.aspx?id={}'
+from .plugin_meta import IDENTIFIER, setting_defaults
 
 
 def get_prefs():
-    return JSONConfig('plugins/{}'.format(IDENTIFIER))
+    prefs = JSONConfig('plugins/{}'.format(IDENTIFIER))
+    prefs.defaults = setting_defaults
+    return prefs

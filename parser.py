@@ -21,19 +21,17 @@ AUTHORS_JOIN_DELIMETER = ', '
 AUTHORS_SPLIT_DELIMETER = ', '
 SKIP_AUTHORS = ('Unknown', 'Nieznany')
 
+
 class Parser():
     def __init__(self, plugin, log, timeout):
         self.plugin = plugin
+        self.prefs = plugin.PREFS
         self.log = log
         self.timeout = timeout
         self.cj = cookielib.CookieJar()
         self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cj))
         urllib2.install_opener(self.opener)
         self.login()
-
-    @property
-    def prefs(self):
-        return self.plugin.prefs
 
     def download_page(self, url):
         try:
@@ -134,6 +132,9 @@ class Parser():
     def parse_book_page(self, url):
         # TODO: Support for login-based rating fetching
         # TODO: Move all parsing logic to methods in order to avoid dangling variables
+        # TODO: Saving metadata in custom columns
+        # TODO: Configurable embedding metadata in comment
+        # TODO: Proper series/cycles handling
         self.log.info('INFO: Downloading book page: {}'.format(url))
         resp = self.download_page(url)
         if not resp:
@@ -255,8 +256,8 @@ class Parser():
                 mi.comments = lxml.html.tostring(tag)
 
                 # Additional informations saved in
-                if additional_meta['original_title']:
-                    mi.comments = mi.comments + u'<p id="book_original_title">Tytuł oryginału: <em>' + additional_meta['original_title'] + '</em></p>'
+                if 'original_title' in additional_meta:
+                    mi.comments = mi.comments + u'<p id="tytul_oryginalu">Tytuł oryginału: <em>' + additional_meta['original_title'] + '</em></p>'
                     self.log.debug(u'DEBUG: Embedded original title in comment')
                 if 'translators' in additional_meta:
                     mi.comments = mi.comments + u'<p id="tlumaczenie">Tłumaczenie: ' + ', '.join(additional_meta['translators']) + '</p>'
@@ -325,9 +326,10 @@ class Parser():
 
     def parse_series(self, root):
         try:
-            series_node = root.xpath('//li//a[contains(@href,"bookSerie.aspx")]')
+            series_info = None
+            series_node = root.xpath('//li/ul/li/a[preceding::strong[text()[contains(.,"Cykle:")]]]')
             if series_node:
-                series_list = root.xpath('//li//a[contains(@href,"bookSerie.aspx")]/text()')
+                series_list = root.xpath('//li/ul/li/a[preceding::strong[text()[contains(.,"Cykle:")]]]/text()')
                 if series_list:
                     series_text = series_list[0]
                 else:
@@ -337,7 +339,7 @@ class Parser():
                 return (None, None)
 
             if series_text:
-                for _data in root.xpath('//li/a[contains(@href,"bookSerie.aspx")]/following-sibling::text()[1]'):
+                for _data in root.xpath('//li/ul/li[preceding::strong[text()[contains(.,"Cykle:")]]]/text()'):
                     if 'tom:' in _data:
                         series_info = _data.split(' (tom: ', 1)
                         break

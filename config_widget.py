@@ -10,34 +10,10 @@ __docformat__ = 'restructuredtext en'
 from PyQt5.Qt import Qt, QWidget, QFormLayout, QVBoxLayout, QHBoxLayout, QGroupBox, \
     QLabel, QLineEdit, QIntValidator, QDoubleValidator, QCheckBox
 
-from .utils import IDENTIFIER, get_prefs
+from .utils import get_prefs
+# from prefs_mock import get_prefs
 
 prefs = get_prefs()
-prefs.defaults['max_results'] = 2
-prefs.defaults['authors_search'] = True
-prefs.defaults['only_first_author'] = False
-prefs.defaults['covers'] = True
-prefs.defaults['max_covers'] = 5
-prefs.defaults['threads'] = True
-prefs.defaults['max_threads'] = 3
-prefs.defaults['thread_delay'] = 0.1
-
-# metadata settings
-prefs.defaults['title'] = True
-prefs.defaults['authors'] = True
-prefs.defaults['pubdate'] = True
-# prefs.defaults['publisher'] = True
-# prefs.defaults['isbn'] = True
-prefs.defaults['comments'] = True
-prefs.defaults['languages'] = True
-prefs.defaults['rating'] = True
-prefs.defaults['tags'] = True
-prefs.defaults['identifier'] = True
-prefs.defaults['translators'] = True
-prefs.defaults['original_title'] = True
-prefs.defaults['categories'] = True
-prefs.defaults['genres'] = True
-prefs.defaults['series'] = True
 
 
 class ConfigWidget(QWidget):
@@ -45,12 +21,13 @@ class ConfigWidget(QWidget):
         QWidget.__init__(self)
 
         self.main_layout = QVBoxLayout()
-        self.group_box = QGroupBox('Ustawienia ogólne')
-        self.group_box2 = QGroupBox('Pobieraj metadane')
-        self.group_box3 = QGroupBox('Pobieraj dodatkowe metadane i dołącz je do komentarza')
         self.l = QFormLayout()
         self.l2 = QHBoxLayout()
         self.l3 = QHBoxLayout()
+
+        self.group_box = QGroupBox('Ustawienia ogólne')
+        self.group_box2 = QGroupBox('Pobieraj metadane')
+        self.group_box3 = QGroupBox('Pobieraj dodatkowe metadane i dołącz je do komentarza')
 
         # general settings
         self.max_results_label = QLabel('Maksymalna liczba wyników')
@@ -113,65 +90,81 @@ pierwszy wynik może być niepoprawny')
         self.l.addRow(self.thread_delay_label, self.thread_delay)
 
         # metadata settings
-        self.title = QCheckBox('Tytuł')
-        self.title.setChecked(prefs['title'])
-        self.l2.addWidget(self.title)
+        if 'title' in prefs.defaults:
+            self.title = QCheckBox('Tytuł')
+            self.title.setChecked(prefs['title'])
+            self.l2.addWidget(self.title)
 
-        self.authors = QCheckBox('Autorzy')
-        self.authors.setChecked(prefs['authors'])
-        self.l2.addWidget(self.authors)
+        if 'authors' in prefs.defaults:
+            self.authors = QCheckBox('Autorzy')
+            self.authors.setChecked(prefs['authors'])
+            self.l2.addWidget(self.authors)
 
-        self.pubdate = QCheckBox('Data wydania')
-        self.pubdate.setChecked(prefs['pubdate'])
-        self.l2.addWidget(self.pubdate)
-        '''
-        self.publisher = QCheckBox('Wydawca')
-        self.publisher.setChecked(prefs['publisher'])
-        self.l2.addWidget(self.publisher)
+        if 'pubdate' in prefs.defaults:
+            self.pubdate = QCheckBox('Data wydania')
+            self.pubdate.setChecked(prefs['pubdate'])
+            self.l2.addWidget(self.pubdate)
+
+        if 'publisher' in prefs.defaults:
+            self.publisher = QCheckBox('Wydawca')
+            self.publisher.setChecked(prefs['publisher'])
+            self.l2.addWidget(self.publisher)
         
-        self.isbn = QCheckBox('ISBN')
-        self.isbn.setChecked(prefs['isbn'])
-        self.l2.addWidget(self.isbn)
-        '''
-        self.comments = QCheckBox('Opis')
-        self.comments.setChecked(prefs['comments'])
-        self.l2.addWidget(self.comments)
+        if 'isbn' in prefs.defaults:
+            self.isbn = QCheckBox('ISBN')
+            self.isbn.setChecked(prefs['isbn'])
+            self.l2.addWidget(self.isbn)
 
-        self.languages = QCheckBox('Języki')
-        self.languages.setChecked(prefs['languages'])
-        self.l2.addWidget(self.languages)
+        if 'comments' in prefs.defaults:
+            self.comments = QCheckBox('Opis')
+            self.comments.setChecked(prefs['comments'])
+            self.l2.addWidget(self.comments)
 
-        self.rating = QCheckBox('Ocena')
-        self.rating.setChecked(prefs['rating'])
-        self.l2.addWidget(self.rating)
+        if 'languages' in prefs.defaults:
+            self.languages = QCheckBox('Języki')
+            self.languages.setChecked(prefs['languages'])
+            self.l2.addWidget(self.languages)
 
-        self.tags = QCheckBox('Etykiety (tagi)')
-        self.tags.setChecked(prefs['tags'])
-        self.l2.addWidget(self.tags)
+        if 'rating' in prefs.defaults:
+            self.rating = QCheckBox('Ocena')
+            self.rating.setChecked(prefs['rating'])
+            self.l2.addWidget(self.rating)
 
-        self.identifier = QCheckBox('Identyfikator')
-        self.identifier.setChecked(prefs['identifier'])
-        self.l2.addWidget(self.identifier)
+        if 'tags' in prefs.defaults:
+            self.tags = QCheckBox('Etykiety (tagi)')
+            self.tags.setChecked(prefs['tags'])
+            self.l2.addWidget(self.tags)
 
-        self.translators = QCheckBox('Tłumaczenie')
-        self.translators.setChecked(prefs['translators'])
-        self.l3.addWidget(self.translators)
+        if 'series' in prefs.defaults:
+            self.series = QCheckBox('Cykle')
+            self.series.setChecked(prefs['series'])
+            self.l2.addWidget(self.series)
 
-        self.original_title = QCheckBox('Tytuł oryginału')
-        self.original_title.setChecked(prefs['original_title'])
-        self.l3.addWidget(self.original_title)
+        if 'identifier' in prefs.defaults:
+            self.identifier = QCheckBox('Identyfikator')
+            self.identifier.setChecked(prefs['identifier'])
+            self.l2.addWidget(self.identifier)
 
-        self.categories = QCheckBox('Kategorie')
-        self.categories.setChecked(prefs['categories'])
-        self.l3.addWidget(self.categories)
+        # custom metadata
+        if 'translators' in prefs.defaults:
+            self.translators = QCheckBox('Tłumaczenie')
+            self.translators.setChecked(prefs['translators'])
+            self.l3.addWidget(self.translators)
 
-        self.genres = QCheckBox('Gatunki')
-        self.genres.setChecked(prefs['genres'])
-        self.l3.addWidget(self.genres)
+        if 'original_title' in prefs.defaults:
+            self.original_title = QCheckBox('Tytuł oryginału')
+            self.original_title.setChecked(prefs['original_title'])
+            self.l3.addWidget(self.original_title)
 
-        self.series = QCheckBox('Cykle')
-        self.series.setChecked(prefs['series'])
-        self.l3.addWidget(self.series)
+        if 'categories' in prefs.defaults:
+            self.categories = QCheckBox('Kategorie')
+            self.categories.setChecked(prefs['categories'])
+            self.l3.addWidget(self.categories)
+
+        if 'genres' in prefs.defaults:
+            self.genres = QCheckBox('Gatunki')
+            self.genres.setChecked(prefs['genres'])
+            self.l3.addWidget(self.genres)
 
         self.group_box.setLayout(self.l)
         self.group_box2.setLayout(self.l2)
@@ -179,7 +172,7 @@ pierwszy wynik może być niepoprawny')
         self.main_layout.addWidget(self.group_box)
         self.main_layout.addWidget(self.group_box2)
         self.main_layout.addWidget(self.group_box3)
-        #self.main_layout.setAlignment(Qt.AlignTop)
+        self.main_layout.setAlignment(Qt.AlignTop)
         self.setLayout(self.main_layout)
 
     def save_settings(self):
@@ -193,20 +186,46 @@ pierwszy wynik może być niepoprawny')
         prefs['thread_delay'] = float(self.thread_delay.text().replace(',', '.'))
 
         # metadata settings
-        prefs['title'] = self.title.isChecked()
-        prefs['authors'] = self.authors.isChecked()
-        prefs['pubdate'] = self.pubdate.isChecked()
-        # prefs['publisher'] = self.publisher.isChecked()
-        # prefs['isbn'] = self.isbn.isChecked()
-        prefs['comments'] = self.comments.isChecked()
-        prefs['languages'] = self.languages.isChecked()
-        prefs['rating'] = self.rating.isChecked()
-        prefs['tags'] = self.tags.isChecked()
-        prefs['identifier'] = self.identifier.isChecked()
-        prefs['translators'] = self.translators.isChecked()
-        prefs['original_title'] = self.original_title.isChecked()
-        prefs['categories'] = self.categories.isChecked()
-        prefs['genres'] = self.genres.isChecked()
-        prefs['series'] = self.series.isChecked()
+        if 'title' in prefs.defaults:
+            prefs['title'] = self.title.isChecked()
+        if 'authors' in prefs.defaults:
+            prefs['authors'] = self.authors.isChecked()
+        if 'pubdate' in prefs.defaults:
+            prefs['pubdate'] = self.pubdate.isChecked()
+        if 'publisher' in prefs.defaults:
+            prefs['publisher'] = self.publisher.isChecked()
+        if 'isbn' in prefs.defaults:
+            prefs['isbn'] = self.isbn.isChecked()
+        if 'comments' in prefs.defaults:
+            prefs['comments'] = self.comments.isChecked()
+        if 'languages' in prefs.defaults:
+            prefs['languages'] = self.languages.isChecked()
+        if 'rating' in prefs.defaults:
+            prefs['rating'] = self.rating.isChecked()
+        if 'tags' in prefs.defaults:
+            prefs['tags'] = self.tags.isChecked()
+        if 'series' in prefs.defaults:
+            prefs['series'] = self.series.isChecked()
+        if 'identifier' in prefs.defaults:
+            prefs['identifier'] = self.identifier.isChecked()
+
+        # custom metadata settings
+        if 'translators' in prefs.defaults:
+            prefs['translators'] = self.translators.isChecked()
+        if 'original_title' in prefs.defaults:
+            prefs['original_title'] = self.original_title.isChecked()
+        if 'categories' in prefs.defaults:
+            prefs['categories'] = self.categories.isChecked()
+        if 'genres' in prefs.defaults:
+            prefs['genres'] = self.genres.isChecked()
 
         return prefs
+
+
+if __name__ == '__main__':
+    import sys
+    from PyQt5.QtWidgets import QApplication
+    app = QApplication(sys.argv)
+    w = ConfigWidget()
+    w.show()
+    sys.exit(app.exec_())
