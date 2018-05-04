@@ -9,4 +9,3 @@ from .plugin_base import BaseSource
 
 class Biblionetka(BaseSource):
     pass
-

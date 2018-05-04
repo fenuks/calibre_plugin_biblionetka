@@ -11,6 +11,12 @@ from . import plugin_meta
 
 
 class BaseSource(Source):
+    """
+    Class main plugin should inherit from providing common implementation.
+    Any customization should be done by overriting methods in inherited class or
+    via variables in plugin_meta.py
+    """
+
     # custom variables
     IDENTIFIER = plugin_meta.IDENTIFIER
     PREFS = get_prefs()
@@ -36,6 +42,7 @@ class BaseSource(Source):
     cached_cover_url_is_reliable = True
     prefer_results_with_isbn = True
 
+
     def get_book_url(self, identifiers):
         book_id = identifiers.get(self.IDENTIFIER, None)
         if book_id:
@@ -50,23 +57,15 @@ class BaseSource(Source):
 
         self.cache_identifier_to_cover_url('urls', [])
         parser = Parser(self, log, timeout)
-        urls = parser.parse_search_page(title, authors, with_authors=self.PREFS['authors_search'],
-                                        only_first_author=self.PREFS['only_first_author'])
-        t = self.get_book_url(identifiers)
-        if t:
-            urls.insert(0, t[2])
-        if abort.is_set():
-            return
+        identifier_url = None
+        identifier_data = self.get_book_url(identifiers)
+        if identifier_data:
+            identifier_url = identifier_data[2]
 
-        for url in urls[:self.PREFS['max_results']]:
-            mi = parser.parse_book_page(url)
-            if mi:
-                # self.clean_downloaded_metadata(mi)
-                result_queue.put(mi)
-            if abort.is_set():
-                return
+        metadata = parser.run(title, authors, identifier_url, abort)
+        for mi in metadata:
+            result_queue.put(mi)
 
-        return
 
     # cover reladed functions
     def get_cached_cover_url(self, identifiers):
@@ -90,11 +89,11 @@ class BaseSource(Source):
             return
         else:
             log.info('INFO: Found covers in cache')
-
+        urls = urls[:self.PREFS['max_covers']]
         if self.PREFS['threads']:
-            self.download_multiple_covers(title, authors, urls, get_best_cover, timeout, result_queue, abort, log)
+            self.download_multiple_covers(title, authors, urls, get_best_cover, timeout, result_queue, abort, log, None)
         else:
-            for cover in urls[:self.PREFS['max_covers']]:
+            for cover in urls:
                 self.download_image(cover, timeout, log, result_queue)
 
     # plugin configuraton window
