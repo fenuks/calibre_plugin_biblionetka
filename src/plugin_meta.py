@@ -5,7 +5,7 @@ BOOK_PAGE_URL_SCHEME = "http://www.biblionetka.pl/book.aspx?id={}"
 # plugin options
 name = "biblioNETka.pl"
 description = "Pobiera metadane z serwisu {}".format(name)
-version = (1, 0, 5)
+version = (1, 0, 6)
 author = "fenuks"
 
 # source plugin options

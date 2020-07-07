@@ -1,11 +1,11 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 from __future__ import (unicode_literals, division, absolute_import, print_function)
-from Queue import Queue
+from queue import Queue
 
 from calibre.ebooks.metadata.sources.base import Source
 
 from .utils import get_prefs
-from .parser import Parser
+from .page_parser import Parser
 from .config_widget import ConfigWidget
 from . import plugin_meta
 

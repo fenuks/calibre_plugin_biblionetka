@@ -1,10 +1,6 @@
-#!/usr/bin/env python2
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
-from __future__ import (unicode_literals, division, absolute_import,
-                        print_function)
-
+#!/usr/bin/env python3
 __license__ = 'GPL v3'
-__copyright__ = '2014, fenuks'
+__copyright__ = '2017-2020, fenuks'
 __docformat__ = 'restructuredtext en'
 
 from PyQt5.Qt import Qt, QWidget, QFormLayout, QVBoxLayout, QHBoxLayout, QGroupBox, \
@@ -108,7 +104,7 @@ pierwszy wynik może być niepoprawny')
             self.publisher = QCheckBox('Wydawca')
             self.publisher.setChecked(PREFS['publisher'])
             self.l2.addWidget(self.publisher)
-        
+
         if 'isbn' in PREFS.defaults:
             self.isbn = QCheckBox('ISBN')
             self.isbn.setChecked(PREFS['isbn'])
